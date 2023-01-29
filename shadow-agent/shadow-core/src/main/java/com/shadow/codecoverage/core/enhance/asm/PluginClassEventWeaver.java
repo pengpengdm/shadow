@@ -1,6 +1,6 @@
 package com.shadow.codecoverage.core.enhance.asm;
 
-import com.pepsi.implant.Implant;
+import com.shadow.codecoverage.implant.Implant;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.JSRInlinerAdapter;
 

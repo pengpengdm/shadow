@@ -3,6 +3,7 @@ package com.shadow.codecoverage.core;
 
 import com.shadow.codecoverage.core.config.AgentConfig;
 import com.shadow.codecoverage.core.config.ConfigInitializer;
+import com.shadow.codecoverage.core.config.LogbackInitializer;
 import com.shadow.codecoverage.core.service.ServiceManager;
 
 import java.io.File;
