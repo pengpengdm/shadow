@@ -18,39 +18,27 @@ import java.util.List;
  */
 public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMethods {
 
-    private Logger logger = LoggerFactory.getLogger(BizMethodReWrite.class);
-
     private final int methodId;
-
     private final int listenerId;
-
     private final int startLine;
-
     private final int endLine;
-
     private final int access;
-
     private final String desc;
-
     private final String className;
-
     private final String methodName;
-
     private final boolean isConstructor;
-
     private final List<NewLocation> newReplacementLocations = new ArrayList<>();
-
     private final Label methodBegin = new Label(), methodEnd = new Label();
-
     private final Type ASM_TYPE_IMPLANT = Type.getType(Implant.class);
     private final Type BIT_SET_TYPE = Type.getType(BitSet.class);
     private final Type THROWABLE_TYPE = Type.getType(Throwable.class);
+    private final boolean catchingException = false;
+    private Logger logger = LoggerFactory.getLogger(BizMethodReWrite.class);
     private boolean hasEntered = false, canInstrument = true;
     private boolean isPendingLineTrace = true;
     private int currentLine = 0;
     private boolean trackingLines = false;
     private int lineMapVar;
-    private final boolean catchingException = false;
     private boolean catchingExceptions = false;
 
     public BizMethodReWrite(int api, MethodVisitor methodVisitor, String className, int access, String name, String desc,
@@ -131,7 +119,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
     public void visitJumpInsn(int opcode, Label label) {
         instrumentLine();
         super.visitJumpInsn(opcode, label);
-        if(opcode == GOTO){
+        if (opcode == GOTO) {
             // todo
         }
         // any jumping in constructors prior to super constructor call is branching, and too
@@ -139,7 +127,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         if (isConstructor && !hasEntered) {
             canInstrument = false;
             logger.trace("method instrumentation", String.format("jump encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                   className, methodName, desc));
+                    className, methodName, desc));
         }
     }
 
@@ -226,7 +214,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         if (isConstructor && !hasEntered && opcode == Opcodes.RET) {
             canInstrument = false;
             logger.trace("method instrumentation", String.format("ret encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                   className, methodName, desc));
+                    className, methodName, desc));
         }
     }
 
@@ -354,7 +342,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
 
         if ((access & Opcodes.ACC_STATIC) == 0) {
             // not static, so add our own type
-            locals[l++] =className;
+            locals[l++] = className;
         }
 
         // add the argument types
@@ -404,24 +392,24 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
      * instrumentation to track method entries
      */
     private void instrumentEntry() {
-        ByteCodeUtil.pushInt(mv,listenerId);
-        ByteCodeUtil.pushInt(mv,methodId);
-        invokeStatic(ASM_TYPE_IMPLANT,ASM_METHOD_Implant$implantMethodOnBefore);
+        ByteCodeUtil.pushInt(mv, listenerId);
+        ByteCodeUtil.pushInt(mv, methodId);
+        invokeStatic(ASM_TYPE_IMPLANT, ASM_METHOD_Implant$implantMethodOnBefore);
     }
 
     /**
      * instrumentation to track method exits
      */
     private void instrumentExit(boolean inCatchBlock) {
-        ByteCodeUtil.pushInt(mv,listenerId);
-        ByteCodeUtil.pushInt(mv,methodId);
-        mv.visitIntInsn(Opcodes.BIPUSH,inCatchBlock?1:0);
-        invokeStatic(ASM_TYPE_IMPLANT,ASM_METHOD_Implant$implantMethodOnReturn);
+        ByteCodeUtil.pushInt(mv, listenerId);
+        ByteCodeUtil.pushInt(mv, methodId);
+        mv.visitIntInsn(Opcodes.BIPUSH, inCatchBlock ? 1 : 0);
+        invokeStatic(ASM_TYPE_IMPLANT, ASM_METHOD_Implant$implantMethodOnReturn);
         if (trackingLines) {
-            ByteCodeUtil.pushInt(mv,listenerId);
-            ByteCodeUtil.pushInt(mv,methodId);
-            mv.visitVarInsn(Opcodes.ALOAD,lineMapVar);
-            invokeStatic(ASM_TYPE_IMPLANT,ASM_METHOD_Implant$implantRecordMethodCoverLines);
+            ByteCodeUtil.pushInt(mv, listenerId);
+            ByteCodeUtil.pushInt(mv, methodId);
+            mv.visitVarInsn(Opcodes.ALOAD, lineMapVar);
+            invokeStatic(ASM_TYPE_IMPLANT, ASM_METHOD_Implant$implantRecordMethodCoverLines);
         }
     }
 

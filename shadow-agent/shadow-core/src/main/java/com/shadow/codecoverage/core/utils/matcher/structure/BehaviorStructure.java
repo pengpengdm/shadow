@@ -1,6 +1,6 @@
 package com.shadow.codecoverage.core.utils.matcher.structure;
 
-import com.pepsi.core.utils.LazyGet;
+import com.shadow.codecoverage.core.utils.LazyGet;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;

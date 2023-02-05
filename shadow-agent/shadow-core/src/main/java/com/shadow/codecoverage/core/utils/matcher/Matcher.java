@@ -1,6 +1,6 @@
 package com.shadow.codecoverage.core.utils.matcher;
 
-import com.pepsi.core.utils.matcher.structure.ClassStructure;
+import com.shadow.codecoverage.core.utils.matcher.structure.ClassStructure;
 
 /**
  * @Classname Matcher

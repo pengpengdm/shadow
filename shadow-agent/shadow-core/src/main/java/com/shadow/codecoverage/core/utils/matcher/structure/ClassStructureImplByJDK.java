@@ -1,6 +1,7 @@
 package com.shadow.codecoverage.core.utils.matcher.structure;
 
-import com.pepsi.core.utils.LazyGet;
+
+import com.shadow.codecoverage.core.utils.LazyGet;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;

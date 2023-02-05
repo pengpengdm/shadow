@@ -5,8 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static org.apache.commons.io.FileUtils.writeByteArrayToFile;
 
@@ -134,4 +133,71 @@ public class AgentUtils {
     private static String getDumpClassPath() {
         return System.getProperty("agent.home") + File.separator + "dump" + File.separator;
     }
+
+    public static List<Integer> splitMergedNum(List<String> mergedNums) {
+        List<Integer> coverLines = new ArrayList<>();
+        if (mergedNums == null || mergedNums.isEmpty()) {
+            return coverLines;
+        }
+        for (int i = 0; i < mergedNums.size(); i++) {
+            String line = mergedNums.get(i);
+            int index = line.indexOf("-");
+            if (index > 0) {
+                int startNum = Integer.parseInt(line.substring(0, index));
+                int endNum = Integer.parseInt(line.substring(index + 1));
+                while (endNum >= startNum) {
+                    coverLines.add(startNum);
+                    startNum++;
+                }
+            } else {
+                coverLines.add(Integer.valueOf(line));
+            }
+        }
+        return coverLines;
+    }
+
+
+    public static List<String> coverNumMerge(Set<Integer> coverLineSet) {
+        List<Integer> coverLines = new ArrayList<>(coverLineSet);
+        List<String> merges = new ArrayList<>();
+        if (coverLines.size() == 1) {
+            merges.add(coverLines.get(0).toString());
+            return merges;
+        }
+        Collections.sort(coverLines, Comparator.comparingInt(o -> o));
+        mergeSeriaNum(coverLines, 0, merges);
+        return merges;
+    }
+
+    public static void mergeSeriaNum(List<Integer> ints, int index, List<String> coverList) {
+        int end = index;
+        if (ints.size() == index) {
+            return;
+        } else {
+            for (int i = index; i < ints.size(); i++) {
+                if (i < ints.size() - 1) {
+                    if (ints.get(i) + 1 == ints.get(i + 1)) {
+                        end = i;
+                    } else {
+                        if (i > index)
+                            end = end + 1;
+                        break;
+                    }
+                } else {
+                    if (end == ints.size() - 2) {
+                        end = ints.size() - 1;
+                        break;
+                    }
+                }
+            }
+            if (index == end) {
+                coverList.add(ints.get(index).toString());
+                mergeSeriaNum(ints, end + 1, coverList);
+            } else {
+                coverList.add(ints.get(index) + "-" + ints.get(end));
+                mergeSeriaNum(ints, end + 1, coverList);
+            }
+        }
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.shadow.codecoverage.core.utils.matcher;
 
-import com.pepsi.core.utils.matcher.structure.BehaviorStructure;
+import com.shadow.codecoverage.core.utils.matcher.structure.BehaviorStructure;
 
 import java.util.LinkedHashSet;
 

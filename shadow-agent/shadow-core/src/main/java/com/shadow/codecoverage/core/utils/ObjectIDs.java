@@ -4,6 +4,7 @@ import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -23,7 +24,7 @@ public class ObjectIDs {
     /**
      * 对象ID序列生成器，生成范围[1,{@link Integer#MAX_VALUE}]之间的整数
      */
-    private final Sequencer objectIDSequencer = new Sequencer();
+    private final AtomicInteger sequenceRef = new AtomicInteger(10000);
     /**
      * 全局读写锁:用于维护世界的和平
      * <p>
@@ -32,13 +33,11 @@ public class ObjectIDs {
      */
     private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
     // 全局<对象:ID>映射表
-    private final WeakHashMap<Object, Integer> objectIDMapping
-            = new WeakHashMap<Object, Integer>();
+    private final WeakHashMap<Object, Integer> objectIDMapping = new WeakHashMap<Object, Integer>();
     // --- ObjectID : Object 的映射关系维护 ----------------------------------------+
     private final ReferenceQueue<Object> rQueue = new ReferenceQueue<Object>(); //|
     // ---------------------------------------------------------------------------+
-    private final HashMap<Integer, IdentityWeakReference> identityObjectMapping //|
-            = new HashMap<Integer, IdentityWeakReference>();                    //|
+    private final HashMap<Integer, IdentityWeakReference> identityObjectMapping = new HashMap<Integer, IdentityWeakReference>();
 
     private ObjectIDs() {
 
@@ -79,7 +78,7 @@ public class ObjectIDs {
                 nextObjectID = objectIDMapping.get(object);
             } else {
                 mapping(
-                        nextObjectID = objectIDSequencer.next(),
+                        nextObjectID = sequenceRef.getAndIncrement(),
                         object
                 );
             }
@@ -125,36 +124,6 @@ public class ObjectIDs {
         }
     }
 
-    /**
-     * 映射{@code objectID}为Java对象
-     *
-     * @param objectID 对象ID
-     * @param <T>      映射回的对象类型
-     * @return Java对象
-     */
-
-    public <T> T getObject(final int objectID) {
-
-        if (NULL_ID == objectID) {
-            return null;
-        }
-
-        rwLock.readLock().lock();
-        try {
-            final Object object;
-            final IdentityWeakReference reference = identityObjectMapping.get(objectID);
-            if (null != reference
-                    && null != (object = reference.get())) {
-                return (T) object;
-            } else {
-                return null;
-            }
-        } finally {
-            rwLock.readLock().unlock();
-            expungeIdentityObjectMapping();
-        }
-
-    }
 
     // 带ObjectID标记的弱对象引用
     private class IdentityWeakReference extends WeakReference<Object> {

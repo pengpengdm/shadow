@@ -1,3 +1,10 @@
 .idea
 *.iml
 **/target/
+.settings
+.project
+logs
+*.jar
+*.zip
+*.txt
+**/dump_class
