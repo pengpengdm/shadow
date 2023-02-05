@@ -4,7 +4,6 @@ syntax = "proto3";
 option java_multiple_files = true;
 option java_package = "com.shadow.codecoverage.protoc.report";
 
-
 import "report/SpanCoverData.proto";
 
 message TraceCoverData {
@@ -21,7 +20,7 @@ message TraceCoverData {
 
   string atm_req_flag = 6;
 
-  repeated SanCoverData span_vals = 7;
+  repeated SpanCoverData span_vals = 7;
 
   int64 start_time = 8;
 

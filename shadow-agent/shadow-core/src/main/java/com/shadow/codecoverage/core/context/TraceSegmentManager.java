@@ -4,6 +4,7 @@ import com.shadow.codecoverage.core.context.trace.TraceSegment;
 import com.shadow.codecoverage.core.service.ReportAtmCoverDataService;
 import com.shadow.codecoverage.core.service.ReportManualCoverDataService;
 import com.shadow.codecoverage.core.service.ServiceManager;
+import com.shadow.codecoverage.protoc.report.TraceCoverData;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

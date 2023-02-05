@@ -4,16 +4,20 @@ import com.shadow.codecoverage.core.api.EventListener;
 import com.shadow.codecoverage.core.api.event.BeforeEvent;
 import com.shadow.codecoverage.core.api.event.Event;
 import com.shadow.codecoverage.core.api.event.ReturnEvent;
+import com.shadow.codecoverage.core.config.AgentConfig;
 import com.shadow.codecoverage.core.config.GlobalMetaContext;
 import com.shadow.codecoverage.core.context.ContextManager;
 import com.shadow.codecoverage.core.context.trace.AbstractSpan;
+import com.shadow.codecoverage.core.context.util.IdGenerator;
 import com.shadow.codecoverage.core.dto.MethodInformation;
 import com.shadow.codecoverage.core.service.ReportManualCoverDataService;
 import com.shadow.codecoverage.core.service.ServiceManager;
+import com.shadow.codecoverage.core.utils.AgentUtils;
+import com.shadow.codecoverage.protoc.report.SpanCoverData;
+import com.shadow.codecoverage.protoc.report.TraceCoverData;
+import sun.management.Agent;
 
-import java.util.BitSet;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Classname BizCodeLineMethodInterceptor
@@ -77,9 +81,29 @@ public class BizCodeLineMethodInterceptor implements EventListener {
                 .produce(assemblyCommonCoverTrace(methodId, lines));
     }
 
-    private TraceCoverData assemblyCommonCoverTrace(int methodId, Set<Integer> lines) {
-
-
+    private TraceCoverData assemblyCommonCoverTrace(int methodId, Set<Integer> coverLines) {
+        if(coverLines.isEmpty()){
+            return null;
+        }
+        MethodInformation methodInformation = GlobalMetaContext.getMethodMetaInfo(methodId);
+        TraceCoverData.Builder  coverTrace = TraceCoverData.newBuilder();
+        coverTrace.setAppId(AgentConfig.APP_ID)
+                .setMachineInf(AgentConfig.MACHINE_INF)
+                .setTraceId(IdGenerator.traceIdGenerator());
+        List<SpanCoverData> spans =new ArrayList<>();
+        SpanCoverData.Builder spanBuild = SpanCoverData.newBuilder();
+        String methodSign = methodInformation.getClassName()+"."+methodInformation.getName()+";"+methodInformation.getAccess()+";"
+                +methodInformation.getDesc()+";"+methodInformation.getStartLineNum();
+        spanBuild.setMethodKey(AgentUtils.hashForMethodKey(methodSign))
+                .setClassName(methodInformation.getClassName())
+                .setJarName(methodInformation.getJarName())
+                .setMethodName(methodInformation.getName())
+                .addAllCoverLines(AgentUtils.coverNumMerge(coverLines))
+                .setSpanId(methodId)
+                .setParentId(-1);
+        spans.add(spanBuild.build());
+        coverTrace.addAllSpanVals(spans);
+        return coverTrace.build();
     }
 
     private void beforeMethod(BeforeEvent event) {

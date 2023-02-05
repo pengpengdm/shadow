@@ -20,8 +20,6 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
 
     private final int methodId;
     private final int listenerId;
-    private final int startLine;
-    private final int endLine;
     private final int access;
     private final String desc;
     private final String className;
@@ -42,12 +40,10 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
     private boolean catchingExceptions = false;
 
     public BizMethodReWrite(int api, MethodVisitor methodVisitor, String className, int access, String name, String desc,
-                            int methodId, int listenerId, int startLine, int endLine) {
+                            int methodId, int listenerId) {
         super(api, methodVisitor, access, name, desc);
         this.methodId = methodId;
         this.listenerId = listenerId;
-        this.startLine = startLine;
-        this.endLine = endLine;
         this.access = access;
         this.desc = desc;
         this.className = className;

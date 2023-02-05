@@ -5,6 +5,8 @@ import com.shadow.codecoverage.core.config.GlobalMetaContext;
 import com.shadow.codecoverage.core.utils.AgentUtils;
 import com.shadow.codecoverage.databuffer.DataBuffer;
 import com.shadow.codecoverage.databuffer.consumer.DefaultConsumer;
+import com.shadow.codecoverage.protoc.report.SpanCoverData;
+import com.shadow.codecoverage.protoc.report.TraceCoverData;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.client.producer.SendStatus;

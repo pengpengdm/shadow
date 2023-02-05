@@ -135,4 +135,12 @@ public abstract class AbstractSpan {
                 .append(",methodName=").append(methodName);
         return builder.toString();
     }
+
+    /**
+     * 创建每个方法唯一签名
+     * @return
+     */
+    public String getClassMethodSing() {
+        return className +"."+this.methodName+";"+this.access+";"+this.methodSign+";"+this.startLineNum;
+    }
 }
