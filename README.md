@@ -11,8 +11,8 @@ shadow
     本地调试:
            1、普通调试项目(如web、soa服务等)和shadow作为同一级别模块打开
            2、调试项目添加 VM 参数到启动类 -javaagent:D:\work\shadow\home\shadow-agent.jar，就可以debug了.
-    如下图:
-        ![img.png](img.png)
+    如下图所示:
+![img.png](img.png)
 # 项目简介
 
     
