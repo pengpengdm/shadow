@@ -12,16 +12,13 @@ import java.util.jar.JarFile;
  */
 public class JavaAgent {
 
-
-    private static final String LUANCHER_CLASS = "";
-
-    private static final String CORE_LAUNCHER_CLASS = "";
+    private static final String CORE_LAUNCHER_CLASS = "com.shadow.codecoverage.core.Launcher";
 
 
     private static final String AGENT_HOME = new File(JavaAgent.class.getProtectionDomain().getCodeSource().getLocation().getFile())
             .getParent();
 
-    public static void premain(String[] args, Instrumentation instr) {
+    public static void premain(String args, Instrumentation instr) {
         try {
             instr.appendToBootstrapClassLoaderSearch(new JarFile(new File(getImplantJarPath(AGENT_HOME))));
 
@@ -32,7 +29,7 @@ public class JavaAgent {
             final Class<?> coreLauncherClass = agentClassLoader.loadClass(CORE_LAUNCHER_CLASS);
 
             final Object coreLauncherInstance = coreLauncherClass.getMethod("newInstance", String.class)
-                    .invoke(null, args, instr);
+                    .invoke(null, AGENT_HOME);
 
             coreLauncherClass.getMethod("launch", String.class, Instrumentation.class)
                     .invoke(coreLauncherInstance, args, instr);
@@ -47,11 +44,11 @@ public class JavaAgent {
     }
 
     private static String getCoreJarPath(String agentHome) {
-        return agentHome + File.separator + "lib" + File.separator + "agent-core.jar";
+        return agentHome + File.separator + "lib" + File.separator + "shadow-core.jar";
     }
 
     private static String getImplantJarPath(String agentHome) {
-        return agentHome + File.separator + "lib" + File.separator + "agent-implant.jar";
+        return agentHome + File.separator + "lib" + File.separator + "shadow-implant.jar";
     }
 
 

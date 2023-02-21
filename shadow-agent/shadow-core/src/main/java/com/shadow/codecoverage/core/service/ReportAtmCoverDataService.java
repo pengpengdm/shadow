@@ -37,7 +37,7 @@ public class ReportAtmCoverDataService extends DefaultConsumer<TraceCoverData> i
 
     @Override
     public void prepare() throws Throwable {
-        producer = new DefaultMQProducer(AgentConfig.REPORT_ATM_COVERDATA_TOPIC);
+       /* producer = new DefaultMQProducer(AgentConfig.REPORT_ATM_COVERDATA_TOPIC);
         producer.setInstanceName("REPORT_ATM_COVERDATA_INSTANCE");
         producer.setNamesrvAddr(AgentConfig.ROCKETMQ_NAME_SRV_ADDR);
         producer.setVipChannelEnabled(false);
@@ -49,7 +49,7 @@ public class ReportAtmCoverDataService extends DefaultConsumer<TraceCoverData> i
         } catch (Exception e) {
             //日志
             throw new Exception("fail to start atm producer");
-        }
+        }*/
     }
 
     @Override
@@ -80,7 +80,7 @@ public class ReportAtmCoverDataService extends DefaultConsumer<TraceCoverData> i
     @Override
     public void consumer(List<TraceCoverData> data) {
         for (TraceCoverData traceVal : data) {
-            Message message = new Message(AgentConfig.REPORT_ATM_COVERDATA_TOPIC, "ATM_TAG", traceVal.getTraceId(), traceVal.toByteArray());
+           /* Message message = new Message(AgentConfig.REPORT_ATM_COVERDATA_TOPIC, "ATM_TAG", traceVal.getTraceId(), traceVal.toByteArray());
             try {
                 SendResult result = producer.send(message);
                 if (SendStatus.SEND_OK.equals(result.getSendStatus())) {
@@ -88,7 +88,7 @@ public class ReportAtmCoverDataService extends DefaultConsumer<TraceCoverData> i
                 }
             } catch (Exception e) {
                 //retry
-            }
+            }*/
         }
     }
 }

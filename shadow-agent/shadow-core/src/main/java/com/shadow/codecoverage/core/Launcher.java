@@ -25,8 +25,8 @@ public class Launcher {
 
     private ExecutorService executorService;
 
-    public Launcher(String agentHome) {
-        AgentConfig.AGENT_HOME = agentHome;
+    private Launcher(String agentHome) {
+        AgentConfig.AGENT_HOME =  agentHome;
     }
 
     public void launch(String args, Instrumentation instr) {
@@ -35,7 +35,7 @@ public class Launcher {
             //初始化日志
             LogbackInitializer.init(getConfigPath() + "logback.xml");
             //解析config文件到全局变量
-            ConfigInitializer.INST.initialize(getConfigPath() + "agent.config");
+            ConfigInitializer.INST.initialize(getConfigPath() + "shadow-agent.config");
             //解析args到全局变量
             ConfigInitializer.INST.fromArgs(args);
             //拉起所有的组件服务
@@ -49,8 +49,6 @@ public class Launcher {
         } catch (Exception e) {
 
         }
-
-
     }
 
     private String getConfigPath() {
@@ -62,5 +60,9 @@ public class Launcher {
      */
     private void shutdown() {
 
+    }
+
+    public static Launcher newInstance(String agentHome){
+        return new Launcher(agentHome);
     }
 }

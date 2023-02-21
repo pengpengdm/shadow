@@ -40,7 +40,7 @@ public class ReportManualCoverDataService extends DefaultConsumer<TraceCoverData
 
     @Override
     public void prepare() throws Throwable {
-        producer = new DefaultMQProducer(AgentConfig.REPORT_MANUAL_COVERDATA_TOPIC);
+       /* producer = new DefaultMQProducer(AgentConfig.REPORT_MANUAL_COVERDATA_TOPIC);
         producer.setInstanceName("REPORT_MANUAL_COVERDATA_INSTANCE");
         producer.setNamesrvAddr(AgentConfig.ROCKETMQ_NAME_SRV_ADDR);
         producer.setVipChannelEnabled(false);
@@ -52,7 +52,7 @@ public class ReportManualCoverDataService extends DefaultConsumer<TraceCoverData
         } catch (Exception e) {
             //日志
             throw new Exception("fail to start manual producer");
-        }
+        }*/
     }
 
 
@@ -84,7 +84,7 @@ public class ReportManualCoverDataService extends DefaultConsumer<TraceCoverData
     @Override
     public void consumer(List<TraceCoverData> data) {
         for (TraceCoverData traceVal : data) {
-            Message message = new Message(AgentConfig.REPORT_MANUAL_COVERDATA_TOPIC, "MANUAL_TAG", traceVal.getTraceId(), traceVal.toByteArray());
+          /*  Message message = new Message(AgentConfig.REPORT_MANUAL_COVERDATA_TOPIC, "MANUAL_TAG", traceVal.getTraceId(), traceVal.toByteArray());
             try {
                 SendResult result = producer.send(message);
                 if (SendStatus.SEND_OK.equals(result.getSendStatus())) {
@@ -94,7 +94,7 @@ public class ReportManualCoverDataService extends DefaultConsumer<TraceCoverData
                 //retry
             }
             //记录到内存缓存
-            recordCoveredLines(traceVal.getSpanValsList());
+            recordCoveredLines(traceVal.getSpanValsList());*/
         }
     }
 

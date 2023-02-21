@@ -46,14 +46,16 @@ public class BizClassFileTransformer implements ClassFileTransformer {
 
     private boolean isMatchedBizClass(String internalClassName) {
         if (AgentConfig.INSTRU_EXCLUDE_PATTERN != null) {
-            for (Pattern pattern : AgentConfig.INSTRU_EXCLUDE_PATTERN) {
+            for (String str : AgentConfig.INSTRU_EXCLUDE_PATTERN) {
+                Pattern pattern = Pattern.compile(str);
                 if (pattern.matcher(internalClassName).lookingAt()) {
                     return false;
                 }
             }
         }
         if (AgentConfig.INSTRU_INCLUDE_PATTERN != null) {
-            for (Pattern pattern : AgentConfig.INSTRU_INCLUDE_PATTERN) {
+            for (String str : AgentConfig.INSTRU_INCLUDE_PATTERN) {
+                Pattern pattern = Pattern.compile(str);
                 if (pattern.matcher(internalClassName).lookingAt()) {
                     return true;
                 }
