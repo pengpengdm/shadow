@@ -27,7 +27,7 @@ public interface AsmMethods {
     Method ASM_METHOD_Implant$implantRecordMethodCoverLines = InnerHelper.getAsmMethod(
             Implant.class,
             "recordMethodCoverLines",
-            String.class, int.class, BitSet.class
+            int.class, int.class, BitSet.class
     );
     /**
      * asm method of {@link com.shadow.codecoverage.implant.Implant#implantMethodOnReturn(int, int, int)}

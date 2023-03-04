@@ -4,8 +4,10 @@ package com.shadow.codecoverage.core.utils.matcher;
 import com.shadow.codecoverage.core.api.EnhanceEventWatcher;
 import com.shadow.codecoverage.core.api.EventListener;
 import com.shadow.codecoverage.core.enhance.BizClassFileTransformer;
+import com.shadow.codecoverage.core.enhance.EventListenerHandler;
 import com.shadow.codecoverage.core.enhance.PluginClassFileTransformer;
 import com.shadow.codecoverage.core.utils.matcher.builder.EventWatchCondition;
+import com.shadow.codecoverage.implant.Implant;
 
 import java.lang.instrument.Instrumentation;
 
@@ -21,6 +23,7 @@ public class DefaultEventWeavaWatcher implements EnhanceEventWatcher {
 
     public DefaultEventWeavaWatcher(Instrumentation instr) {
         this.instr = instr;
+        Implant.initHandler(EventListenerHandler.getSingleton());
     }
 
 

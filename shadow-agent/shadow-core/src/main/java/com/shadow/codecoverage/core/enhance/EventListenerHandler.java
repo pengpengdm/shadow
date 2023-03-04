@@ -5,6 +5,7 @@ import com.shadow.codecoverage.core.api.EventListener;
 import com.shadow.codecoverage.core.api.event.BeforeEvent;
 import com.shadow.codecoverage.core.api.event.Event;
 import com.shadow.codecoverage.core.api.event.ReturnEvent;
+import com.shadow.codecoverage.implant.Implant;
 import com.shadow.codecoverage.implant.ImplantHandler;
 
 import java.util.BitSet;
@@ -24,7 +25,6 @@ public class EventListenerHandler implements ImplantHandler {
      */
     private static EventListenerHandler singleton = new EventListenerHandler();
     private final Map<Integer, EventListener> eventListenerMap = new ConcurrentHashMap<>();
-
 
     private EventListenerHandler() {
 

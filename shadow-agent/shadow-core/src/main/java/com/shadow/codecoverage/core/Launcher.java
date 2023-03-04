@@ -5,8 +5,11 @@ import com.shadow.codecoverage.core.api.Interceptor;
 import com.shadow.codecoverage.core.config.AgentConfig;
 import com.shadow.codecoverage.core.config.ConfigInitializer;
 import com.shadow.codecoverage.core.config.LogbackInitializer;
+import com.shadow.codecoverage.core.enhance.EventListenerHandler;
 import com.shadow.codecoverage.core.service.ServiceManager;
 import com.shadow.codecoverage.core.utils.matcher.DefaultEventWeavaWatcher;
+import com.shadow.codecoverage.implant.Implant;
+import com.shadow.codecoverage.implant.ImplantHandler;
 
 import java.io.File;
 import java.lang.instrument.Instrumentation;
@@ -33,7 +36,7 @@ public class Launcher {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> shutdown()));
         try {
             //初始化日志
-            LogbackInitializer.init(getConfigPath() + "logback.xml");
+            LogbackInitializer.init(getConfigPath() + "shadow-logback.xml");
             //解析config文件到全局变量
             ConfigInitializer.INST.initialize(getConfigPath() + "shadow-agent.config");
             //解析args到全局变量
@@ -47,7 +50,7 @@ public class Launcher {
                 interceptor.watch(eventWeavaWatcher);
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

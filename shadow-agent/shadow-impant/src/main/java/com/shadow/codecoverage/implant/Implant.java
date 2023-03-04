@@ -273,4 +273,8 @@ public class Implant {
         }
 
     }
+
+    public static void initHandler(ImplantHandler handler) {
+        implantHandler = handler;
+    }
 }

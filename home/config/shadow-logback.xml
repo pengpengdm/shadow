@@ -2,9 +2,9 @@
 <configuration scan="true" scanPeriod="10000">
 
     <appender name="SHADOW-FILE-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.home}/logs/shadow/shadow-agent.log</file>
+        <file>../logs/shadow/shadow-agent.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${user.home}/logs/shadow/shadow-agent.log.%d{yyyy-MM-dd}</FileNamePattern>
+            <FileNamePattern>../logs/shadow/shadow-agent.log.%d{yyyy-MM-dd}</FileNamePattern>
             <MaxHistory>30</MaxHistory>
         </rollingPolicy>
         <encoder>

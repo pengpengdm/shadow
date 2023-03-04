@@ -21,7 +21,7 @@ public class AgentUtils {
     private static List<String> SELF_CLASS_PREFIXS = new ArrayList<>();
 
     static {
-        SELF_CLASS_PREFIXS.add("com/pepsi/");
+        SELF_CLASS_PREFIXS.add("com/shadow/");
     }
 
 
@@ -70,7 +70,7 @@ public class AgentUtils {
                 }
             }
         }
-        if (loader.getClass().getName().startsWith("com.pepsi")) {
+        if (loader.getClass().getName().startsWith("com.shadow.codecoverage")) {
             return true;
         }
         return false;

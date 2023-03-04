@@ -1,5 +1,6 @@
 package com.shadow.codecoverage.core.enhance.asm;
 
+import com.shadow.codecoverage.core.utils.AgentUtils;
 import com.shadow.codecoverage.implant.Implant;
 import org.objectweb.asm.*;
 import org.objectweb.asm.commons.JSRInlinerAdapter;
@@ -19,10 +20,10 @@ public class PluginClassEventWeaver extends ClassVisitor implements Opcodes, Asm
     private final Set<String> singCodes;
     private Type ASM_TYPE_IMPLANT = Type.getType(Implant.class);
 
-    public PluginClassEventWeaver(int api, ClassVisitor cv, int listenerId, String targetJavaClassName, Set<String> singCodes) {
+    public PluginClassEventWeaver(int api, ClassVisitor cv, int listenerId, String targetInternalClassName, Set<String> singCodes) {
         super(api, cv);
         this.listenerId = listenerId;
-        this.targetJavaClassName = targetJavaClassName;
+        this.targetJavaClassName = AgentUtils.toJavaClassName(targetInternalClassName);
         this.singCodes = singCodes;
     }
 
@@ -84,7 +85,7 @@ public class PluginClassEventWeaver extends ClassVisitor implements Opcodes, Asm
                 builder.append(",").append(methodTypes[i].getClassName());
             }
         }
-        return builder.toString();
+        return builder.append(")").toString();
     }
 
 }

@@ -7,4 +7,4 @@ logs
 *.jar
 *.zip
 *.txt
-**/dump_class
+**/dump/

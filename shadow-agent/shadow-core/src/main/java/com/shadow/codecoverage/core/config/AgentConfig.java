@@ -32,12 +32,12 @@ public class AgentConfig {
     /**
      * 排除增强的类
      */
-    public static List<String> INSTRU_EXCLUDE_PATTERN;
+    public static List<String> INSTRU_EXCLUDE_PACKAGE;
 
     /**
      * 需要行增强的类
      */
-    public static List<String> INSTRU_INCLUDE_PATTERN;
+    public static List<String> INSTRU_INCLUDE_PACKAGE;
 
     /**
      * agent-home

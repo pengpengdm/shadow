@@ -3,13 +3,20 @@ package com.shadow.codecoverage.core.enhance;
 
 import com.shadow.codecoverage.core.api.EventListener;
 import com.shadow.codecoverage.core.config.AgentConfig;
+import com.shadow.codecoverage.core.config.GlobalMetaContext;
+import com.shadow.codecoverage.core.enhance.asm.BizClassEventWeaver;
 import com.shadow.codecoverage.core.utils.AgentUtils;
 import com.shadow.codecoverage.core.utils.ObjectIDs;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
+import java.util.Map;
 import java.util.regex.Pattern;
+
+import static org.objectweb.asm.Opcodes.ASM7;
 
 /**
  * @Classname BizClassFileTransformer
@@ -45,16 +52,16 @@ public class BizClassFileTransformer implements ClassFileTransformer {
     }
 
     private boolean isMatchedBizClass(String internalClassName) {
-        if (AgentConfig.INSTRU_EXCLUDE_PATTERN != null) {
-            for (String str : AgentConfig.INSTRU_EXCLUDE_PATTERN) {
+        if (AgentConfig.INSTRU_EXCLUDE_PACKAGE != null) {
+            for (String str : AgentConfig.INSTRU_EXCLUDE_PACKAGE) {
                 Pattern pattern = Pattern.compile(str);
                 if (pattern.matcher(internalClassName).lookingAt()) {
                     return false;
                 }
             }
         }
-        if (AgentConfig.INSTRU_INCLUDE_PATTERN != null) {
-            for (String str : AgentConfig.INSTRU_INCLUDE_PATTERN) {
+        if (AgentConfig.INSTRU_INCLUDE_PACKAGE != null) {
+            for (String str : AgentConfig.INSTRU_INCLUDE_PACKAGE) {
                 Pattern pattern = Pattern.compile(str);
                 if (pattern.matcher(internalClassName).lookingAt()) {
                     return true;
@@ -64,7 +71,24 @@ public class BizClassFileTransformer implements ClassFileTransformer {
         return false;
     }
 
-    private byte[] transformBizClass(ClassLoader loader, Class<?> classBeingRedefined, String internalClassName, ProtectionDomain protectionDomain, byte[] classfileBuffer) {
-        return new byte[0];
+    private byte[] transformBizClass(ClassLoader loader,
+                                     Class<?> classBeingRedefined,
+                                     String internalClassName,
+                                     ProtectionDomain protectionDomain,
+                                     byte[] classfileBuffer) {
+        int classId = GlobalMetaContext.recordClassInf(internalClassName, "");
+        try {
+            final ClassReader cr = new ClassReader(classfileBuffer);
+            final BizClassVisitor classVisitor = new BizClassVisitor(ASM7);
+            cr.accept(classVisitor, 0);
+            Map<String, BizMethodVisitor> methodVisitorMap = classVisitor.getMethodVisitorMap();
+            final ClassWriter classWriter = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+            cr.accept(new BizClassEventWeaver(
+                    ASM7, classWriter, listenerId, classId, "", methodVisitorMap), ClassWriter.COMPUTE_FRAMES);
+            return AgentUtils.dumpCLassIfNecessary(cr.getClassName(), classWriter.toByteArray());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -24,11 +24,12 @@ public class LogbackInitializer {
         configurator.setContext(context);
         context.reset();
         final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
-        try (InputStream in = new FileInputStream(configFile)) {
+        try {
+            InputStream in = new FileInputStream(configFile);
             configurator.doConfigure(in);
             logger.info("init logback success");
         } catch (Throwable throwable) {
-            //
+            throwable.printStackTrace();
         }
     }
 

@@ -66,7 +66,7 @@ public class PluginClassFileTransformer implements ClassFileTransformer {
             cr.accept(new PluginClassEventWeaver(Opcodes.ASM7, cw, lisenerId, cr.getClassName(), behaviorSignCodes), ClassReader.EXPAND_FRAMES);
             return AgentUtils.dumpCLassIfNecessary(cr.getClassName(), cw.toByteArray());
         } catch (Throwable throwable) {
-            //
+            throwable.printStackTrace();
         }
         return null;
     }
