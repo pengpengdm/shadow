@@ -23,7 +23,6 @@ public class DefaultEventWeavaWatcher implements EnhanceEventWatcher {
 
     public DefaultEventWeavaWatcher(Instrumentation instr) {
         this.instr = instr;
-        Implant.initHandler(EventListenerHandler.getSingleton());
     }
 
 

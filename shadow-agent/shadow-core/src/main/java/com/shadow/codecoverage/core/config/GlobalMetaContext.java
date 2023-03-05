@@ -61,7 +61,7 @@ public class GlobalMetaContext {
 
     public static int recordMethodInf(int classId, int access, String name, String descriptor, String className, String jarName, int startLine, int endLine, String methodKey) {
         return setMethodMetaInfo(METHOD_SEQUECE.getAndIncrement(),
-                new MethodInformation(classId, access, name, descriptor, className, jarName, startLine, endLine, methodKey));
+                new MethodInformation(classId, access,className , descriptor,name , jarName, startLine, endLine, methodKey));
     }
 
 

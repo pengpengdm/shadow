@@ -12,6 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Implant {
 
     private static final SelfCallBarrier selfCallBarrier = new SelfCallBarrier();
+
+
     private static ImplantHandler implantHandler;
 
     /***

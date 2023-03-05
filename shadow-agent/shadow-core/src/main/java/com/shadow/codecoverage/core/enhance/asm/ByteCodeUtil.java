@@ -21,7 +21,7 @@ public class ByteCodeUtil {
         } else if (value >= Short.MIN_VALUE && value <= Short.MAX_VALUE) {
             mv.visitIntInsn(Opcodes.SIPUSH, value);
         } else {
-            mv.visitLdcInsn(value);
+            mv.visitLdcInsn(new Integer(value));
         }
     }
 }

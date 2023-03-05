@@ -69,6 +69,5 @@ public class BizClassEventWeaver extends ClassVisitor implements Opcodes, AsmMet
         String methodKey = AgentUtils.hashForMethodKey(fullyClassName + "." + name + ";" + access + ";" + descriptor + ";" + bizMethodVisitor.getStartLine());
         int methodId = GlobalMetaContext.recordMethodInf(classId, access, name, descriptor, className, jarName, bizMethodVisitor.getStartLine(), bizMethodVisitor.getEndLine(), methodKey);
         return new BizMethodReWrite(api, mv, className, access, name, descriptor, methodId, listenerId);
-
     }
 }

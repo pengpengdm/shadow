@@ -1,5 +1,6 @@
 package com.shadow.codecoverage.core.dto;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -22,6 +23,7 @@ public class ClassInformation {
         this.name = name;
         this.jarName = jarName;
         this.classId = classId;
+        this.methodIds = new HashSet<>();
     }
 
     public String getName() {

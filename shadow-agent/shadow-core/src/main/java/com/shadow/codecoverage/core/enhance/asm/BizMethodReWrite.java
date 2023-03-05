@@ -30,7 +30,6 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
     private final Type ASM_TYPE_IMPLANT = Type.getType(Implant.class);
     private final Type BIT_SET_TYPE = Type.getType(BitSet.class);
     private final Type THROWABLE_TYPE = Type.getType(Throwable.class);
-    private final boolean catchingException = false;
     private Logger logger = LoggerFactory.getLogger(BizMethodReWrite.class);
     private boolean hasEntered = false, canInstrument = true;
     private boolean isPendingLineTrace = true;
@@ -72,11 +71,10 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
             instrumentEntry();
             hasEntered = true;
         } else {
-            logger.debug("method instrumentation", String.format("cannot instrument method %s.%s:%s; skipping", className, methodName, desc));
+            logger.debug("xxxxx");
         }
         if (hasEntered && isPendingLineTrace) {
             instrumentLine();
-            logger.debug("method instrumentation", String.format("line level coverage for %s lines %d-%d potentially missing", className, methodName, currentLine));
         }
     }
 
@@ -115,15 +113,11 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
     public void visitJumpInsn(int opcode, Label label) {
         instrumentLine();
         super.visitJumpInsn(opcode, label);
-        if (opcode == GOTO) {
-            // todo
-        }
         // any jumping in constructors prior to super constructor call is branching, and too
         // complex for us to instrument currently
         if (isConstructor && !hasEntered) {
             canInstrument = false;
-            logger.trace("method instrumentation", String.format("jump encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                    className, methodName, desc));
+            logger.trace("todo");
         }
     }
 
@@ -132,7 +126,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         instrumentLine();
         super.visitLdcInsn(cst);
     }
-
+// todo
     @Override
     public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
         instrumentLine();
@@ -141,8 +135,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         // this is branching, too complex prior to super constructor call
         if (isConstructor && !hasEntered) {
             canInstrument = false;
-            logger.trace("method instrumentation", String.format("lookup switch encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                    className, methodName, desc));
+            logger.trace("todo");
         }
     }
 
@@ -166,8 +159,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         // this is branching, too complex prior to super constructor call
         if (isConstructor && !hasEntered) {
             canInstrument = false;
-            logger.trace("method instrumentation", String.format("table switch encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                    className, methodName, desc));
+            logger.trace("todo");
         }
     }
 
@@ -209,8 +201,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
         // a super constructor call means we can't easily instrument
         if (isConstructor && !hasEntered && opcode == Opcodes.RET) {
             canInstrument = false;
-            logger.trace("method instrumentation", String.format("ret encountered in constructor %s.%s:%s prior to object initialization; unable to instrument",
-                    className, methodName, desc));
+            logger.trace("todo");
         }
     }
 
