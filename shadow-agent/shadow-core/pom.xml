@@ -23,6 +23,7 @@
         <dependency>
             <groupId>com.shadow.codecoverage</groupId>
             <artifactId>shadow-impant</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -90,7 +90,7 @@ public class EventListenerHandler implements ImplantHandler {
         try {
             listener.onEvent(event);
         } catch (Throwable throwable) {
-
+            throwable.printStackTrace();
         }
 
     }

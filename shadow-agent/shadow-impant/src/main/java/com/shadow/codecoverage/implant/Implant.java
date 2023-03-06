@@ -14,7 +14,7 @@ public class Implant {
     private static final SelfCallBarrier selfCallBarrier = new SelfCallBarrier();
 
 
-    private static ImplantHandler implantHandler;
+    public static ImplantHandler implantHandler;
 
     /***
      *
@@ -274,9 +274,5 @@ public class Implant {
 
         }
 
-    }
-
-    public static void initHandler(ImplantHandler handler) {
-        implantHandler = handler;
     }
 }

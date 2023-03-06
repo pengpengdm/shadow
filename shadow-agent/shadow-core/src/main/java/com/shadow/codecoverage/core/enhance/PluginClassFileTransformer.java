@@ -8,6 +8,7 @@ import com.shadow.codecoverage.core.utils.matcher.Matcher;
 import com.shadow.codecoverage.core.utils.matcher.MatchingResult;
 import com.shadow.codecoverage.core.utils.matcher.structure.ClassStructure;
 import com.shadow.codecoverage.core.utils.matcher.structure.ClassStructureImplByAsm;
+import com.shadow.codecoverage.implant.Implant;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;

@@ -18,6 +18,8 @@ import java.util.List;
  */
 public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMethods {
 
+    private final Logger logger = LoggerFactory.getLogger(BizMethodReWrite.class);
+
     private final int methodId;
     private final int listenerId;
     private final int access;
@@ -30,7 +32,6 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
     private final Type ASM_TYPE_IMPLANT = Type.getType(Implant.class);
     private final Type BIT_SET_TYPE = Type.getType(BitSet.class);
     private final Type THROWABLE_TYPE = Type.getType(Throwable.class);
-    private Logger logger = LoggerFactory.getLogger(BizMethodReWrite.class);
     private boolean hasEntered = false, canInstrument = true;
     private boolean isPendingLineTrace = true;
     private int currentLine = 0;
@@ -281,8 +282,7 @@ public class BizMethodReWrite extends AdviceAdapter implements Opcodes, AsmMetho
                 BIT_SET_TYPE.getInternalName(),
                 "<init>",
                 Type.getMethodDescriptor(
-                        Type.VOID_TYPE,
-                        Type.INT_TYPE
+                        Type.VOID_TYPE
                 ),
                 false
         );

@@ -17,7 +17,6 @@ public class HttpServletPlugin implements Interceptor {
 
     private static final String ENHANCE_CLASS = "javax.servlet.http.HttpServlet";
 
-
     @Override
     public void watch(EnhanceEventWatcher watcher) {
         EventWatchBuilder.IBuildingForClass building4Class = new EventWatchBuilder(watcher)

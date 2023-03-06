@@ -8,6 +8,7 @@ import com.shadow.codecoverage.core.enhance.EventListenerHandler;
 import com.shadow.codecoverage.core.enhance.PluginClassFileTransformer;
 import com.shadow.codecoverage.core.utils.matcher.builder.EventWatchCondition;
 import com.shadow.codecoverage.implant.Implant;
+import com.shadow.codecoverage.implant.ImplantHandler;
 
 import java.lang.instrument.Instrumentation;
 
@@ -23,6 +24,9 @@ public class DefaultEventWeavaWatcher implements EnhanceEventWatcher {
 
     public DefaultEventWeavaWatcher(Instrumentation instr) {
         this.instr = instr;
+        Implant.implantHandler = EventListenerHandler.getSingleton();
+        ClassLoader loader = Implant.class.getClassLoader();
+        System.out.println(loader);
     }
 
 

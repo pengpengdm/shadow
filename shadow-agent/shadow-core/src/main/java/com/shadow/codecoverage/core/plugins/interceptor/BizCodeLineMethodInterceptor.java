@@ -45,6 +45,7 @@ public class BizCodeLineMethodInterceptor implements EventListener {
 
     private void afterMethod(ReturnEvent event) {
         int methodId = event.methodId;
+
         MethodInformation methodInformation = GlobalMetaContext.getMethodMetaInfo(methodId);
 
         Set<Integer> lines = new HashSet<>();
@@ -55,7 +56,6 @@ public class BizCodeLineMethodInterceptor implements EventListener {
             lines.add(i);
         }
         //todo 可以用这个数据做其他事情
-
         if (ContextManager.getTraceId() != null) {
             try {
                 AbstractSpan span = ContextManager.getActiveSpan();
