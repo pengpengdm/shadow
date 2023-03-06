@@ -1,8 +1,6 @@
 package com.shadow.codecoverage.core.config;
 
 import org.apache.commons.lang.StringUtils;
-import org.omg.CORBA.ObjectHelper;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;

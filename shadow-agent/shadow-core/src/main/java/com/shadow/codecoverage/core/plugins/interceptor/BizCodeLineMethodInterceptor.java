@@ -15,7 +15,6 @@ import com.shadow.codecoverage.core.service.ServiceManager;
 import com.shadow.codecoverage.core.utils.AgentUtils;
 import com.shadow.codecoverage.protoc.report.SpanCoverData;
 import com.shadow.codecoverage.protoc.report.TraceCoverData;
-import sun.management.Agent;
 
 import java.util.*;
 
@@ -26,7 +25,6 @@ import java.util.*;
  * @Created by pepsi
  */
 public class BizCodeLineMethodInterceptor implements EventListener {
-
 
     @Override
     public void onEvent(Event event) throws Throwable {
